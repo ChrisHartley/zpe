@@ -1,0 +1,26 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: planning_notifier/Dockerfile
+    command: python planning_notifier/manage.py runserver
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - selenium
+
+  selenium:
+    image: selenium/standalone-firefox:4.27.0-20241204
+    shm_size: 2gb
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    environment:
+      - SE_START_XVFB=false
