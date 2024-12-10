@@ -190,7 +190,7 @@ def get_case_list(start_date='09/10/2024', end_date='09/12/2024'):
 
     cases = []
     # HACK - need to get download folder dynamically, setting it doesn't seem to work so that's why this hack is here.
-    with open('/home/chris/Downloads/{}'.format(fileName,)) as csvfilein:
+    with open('/tmp/downloads/{}'.format(fileName,)) as csvfilein:
         case_reader = csv.DictReader(csvfilein)
         for row in case_reader:
             case = get_case_details(row['Case Number'], driver)

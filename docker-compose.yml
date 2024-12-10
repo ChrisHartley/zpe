@@ -3,9 +3,10 @@ services:
     build:
       context: .
       dockerfile: planning_notifier/Dockerfile
-    command: python planning_notifier/manage.py runserver
+    command: python planning_notifier/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
+      - shared-volume:/tmp/downloads
     ports:
       - "8000:8000"
     restart: always
@@ -22,5 +23,10 @@ services:
     ports:
       - "4444:4444"
       - "7900:7900"
-    environment:
-      - SE_START_XVFB=false
+#    environment:
+#      - SE_START_XVFB=false
+    volumes:
+      - shared-volume:/home/seluser/Downloads
+
+volumes:
+  shared-volume:
