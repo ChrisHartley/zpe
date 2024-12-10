@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'planning_notifier.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.spatialite',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/db/db.sqlite3',
     }
 }
 

@@ -6,6 +6,7 @@ services:
     command: python planning_notifier/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
+      - ./db:/db
       - shared-volume:/tmp/downloads
     ports:
       - "8000:8000"
@@ -30,3 +31,4 @@ services:
 
 volumes:
   shared-volume:
+  db:
