@@ -1,21 +1,21 @@
 services:
 
-    nginx-proxy:
-      container_name: nginx-proxy
-      build:
-        context: .
-        dockerfile: ./config/nginx/Dockerfile
-      volumes:
-        - certs:/etc/nginx/certs:ro
-        - /etc/nginx/vhost.d
-        - /etc/acme.sh
-        - /usr/share/nginx/html
-        - /var/run/docker.sock:/tmp/docker.sock:ro
-        - static:/static
-      ports:
-        - '80:80'
-        - '443:443'
-      restart: always
+  nginx-proxy:
+    container_name: nginx-proxy
+    build:
+      context: .
+      dockerfile: ./config/nginx/Dockerfile
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - /etc/nginx/vhost.d
+      - /etc/acme.sh
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - static:/static
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
 
   letsencrypt:
     image: nginxproxy/acme-companion
@@ -42,8 +42,8 @@ services:
       - ./db:/db
       - static:/static
       - shared-volume:/tmp/downloads
-    # ports:
-    #   - "8000:8000"
+    ports:
+      - "8000:8000"
     restart: unless-stopped
     depends_on:
       - selenium
@@ -53,15 +53,21 @@ services:
   selenium:
     image: selenium/standalone-firefox:4.27.0-20241204
     shm_size: 2gb
-    # ports:
-    #   - "4444:4444"
-    #   - "7900:7900"
+    ports:
+      - "4444:4444"
+      - "7900:7900"
     environment:
 #      - SE_START_XVFB=false
       - SE_ENABLE_TRACING=false
     volumes:
       - shared-volume:/home/seluser/Downloads
 
+networks:
+  local:
+    driver: bridge
+
 volumes:
   shared-volume:
   db:
+  static:
+  certs:
