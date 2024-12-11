@@ -1,6 +1,7 @@
 services:
 
   nginx-proxy:
+    image: nginxproxy/nginx-proxy
     container_name: nginx-proxy
     build:
       context: .
@@ -8,7 +9,7 @@ services:
     volumes:
       - certs:/etc/nginx/certs:ro
       - /etc/nginx/vhost.d
-      - /etc/acme.sh
+    #  - /etc/acme.sh
       - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - static:/static
@@ -19,6 +20,7 @@ services:
 
   letsencrypt:
     image: nginxproxy/acme-companion
+    container_name: acme-companion
     environment:
       - LETSENCRYPT_EMAIL=kristina.trinity@anymouse.org
       - LETSENCRYPT_HOST=zpe.anymouse.org
@@ -26,6 +28,7 @@ services:
     volumes:
       - certs:/etc/nginx/certs
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
     volumes_from:
       - nginx-proxy
     restart: unless-stopped
@@ -47,7 +50,7 @@ services:
     restart: unless-stopped
     depends_on:
       - selenium
-      - nginx-proxy
+    #  - nginx-proxy
 
 
   selenium:
@@ -71,3 +74,4 @@ volumes:
   db:
   static:
   certs:
+  acme:
