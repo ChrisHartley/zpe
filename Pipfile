@@ -11,6 +11,7 @@ requests = "*"
 django = "*"
 pandas = "*"
 lxml = "*"
+gunicorn = "*"
 
 [dev-packages]
 
