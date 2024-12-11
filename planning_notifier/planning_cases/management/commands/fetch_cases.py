@@ -32,21 +32,24 @@ class Command(BaseCommand):
                 geometry_pnt=GEOSGeometry(case_details['PNT_WKT'])
             except ValueError:
                 geometry_pnt = None
-            obj, created = planning_case.objects.update_or_create(
-                case_number=case_details['Case Number'],
-                defaults = {
-                    'case_date':datetime.strptime(case_details['Case Date'], "%m/%d/%Y").date(),
-                    'case_type':case_details['CaseType'],
-                    'location':case_details['Location'],
-                    'description':case_details['Description'],
-                    'owner':case_details['Owner'],
-                    'case_url':case_details['Case URL'],
-                    'geometry_pnt':geometry_pnt,
-                    'parcel_number':case_details['Parcel'],
-                },
-            )
-            if created:
-                cases_created = cases_created + 1
+            try:
+                obj, created = planning_case.objects.update_or_create(
+                    case_number=case_details['Case Number'],
+                    defaults = {
+                        'case_date':datetime.strptime(case_details['Case Date'], "%m/%d/%Y").date(),
+                        'case_type':case_details['CaseType'],
+                        'location':case_details['Location'],
+                        'description':case_details['Description'],
+                        'owner':case_details['Owner'],
+                        'case_url':case_details['Case URL'],
+                        'geometry_pnt':geometry_pnt,
+                        'parcel_number':case_details['Parcel'],
+                    },
+                )
+                if created:
+                    cases_created = cases_created + 1
+            except IntegrityError:
+                pass
         self.stdout.write(
             self.style.SUCCESS('Successfully fetched and saved {} cases - {} new'.format(len(cases), cases_created) )
         )

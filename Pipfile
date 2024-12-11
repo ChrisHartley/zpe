@@ -12,6 +12,7 @@ django = "*"
 pandas = "*"
 lxml = "*"
 gunicorn = "*"
+notebook = "*"
 
 [dev-packages]
 

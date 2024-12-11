@@ -136,6 +136,10 @@ def get_case_details(case, driver=None):
     driver.get("https://permitsandcases.indy.gov/")
     #assert "Accela Citizen Access" in driver.title
     try:
+        elem = driver.find_element(By.ID, "more_tab_place_holder")
+        actions = ActionChains(driver)
+        actions.move_to_element(elem).perform()
+        time.sleep(3)
         elem = driver.find_element(By.XPATH, "//*[@title='Planning / Historic Preservation']")
         elem.click()
         #assert driver.find_element(By.XPATH, '//*[@id="ctl00_PlaceHolderMain_lblPermitListTitle"]').text == 'Search for Planning / IHPC Cases'
