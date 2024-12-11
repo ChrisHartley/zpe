@@ -11,3 +11,4 @@ COPY ./planning_notifier .
 COPY ./config/backend/start.sh .
 RUN chmod +x /code/start.sh
 #RUN chmod +x ./config/backend/start.sh
+CMD ["/code/start.sh"]
