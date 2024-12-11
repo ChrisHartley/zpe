@@ -35,8 +35,8 @@ services:
   django:
     build:
       context: .
-      dockerfile: config/backend/Dockerfile
-    command: config/backend/start.sh
+      dockerfile: ./config/backend/Dockerfile
+    command: ./config/backend/start.sh
     volumes:
       - .:/code
       - ./db:/db

@@ -10,3 +10,4 @@ RUN pipenv install --system --deploy && apt-get update && apt-get upgrade -y && 
 COPY ./planning_notifier .
 COPY ./config/backend/start.sh .
 RUN chmod +x /code/start.sh
+#RUN chmod +x ./config/backend/start.sh
