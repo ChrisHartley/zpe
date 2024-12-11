@@ -8,6 +8,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver import ActionChains
 
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
@@ -168,6 +169,10 @@ def get_case_list(start_date='09/10/2024', end_date='09/12/2024'):
 
     driver.get("https://permitsandcases.indy.gov/")
     assert "Accela Citizen Access" in driver.title
+    elem = driver.find_element(By.ID, "more_tab_place_holder")
+    actions = ActionChains(driver)
+    actions.move_to_element(elem).perform()
+    time.sleep(3)
     elem = driver.find_element(By.XPATH, "//*[@title='Planning / Historic Preservation']")
     elem.click()
     assert driver.find_element(By.XPATH, '//*[@id="ctl00_PlaceHolderMain_lblPermitListTitle"]').text == 'Search for Planning / IHPC Cases'
