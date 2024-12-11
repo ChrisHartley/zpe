@@ -1,31 +1,64 @@
 services:
-  web:
+
+    nginx-proxy:
+      container_name: nginx-proxy
+      build:
+        context: .
+        dockerfile: ./config/nginx/Dockerfile
+      volumes:
+        - certs:/etc/nginx/certs:ro
+        - /etc/nginx/vhost.d
+        - /etc/acme.sh
+        - /usr/share/nginx/html
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+        - static:/static
+      ports:
+        - '80:80'
+        - '443:443'
+      restart: always
+
+  letsencrypt:
+    image: nginxproxy/acme-companion
+    environment:
+      - LETSENCRYPT_EMAIL=kristina.trinity@anymouse.org
+      - LETSENCRYPT_HOST=zpe.anymouse.org
+      - NGINX_DOCKER_GEN_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - nginx-proxy
+    restart: unless-stopped
+    depends_on:
+      - nginx-proxy
+
+  django:
     build:
       context: .
-      dockerfile: planning_notifier/Dockerfile
-    command: python planning_notifier/manage.py runserver 0.0.0.0:8000
+      dockerfile: config/backend/Dockerfile
+    command: config/backend/start.sh
     volumes:
       - .:/code
       - ./db:/db
+      - static:/static
       - shared-volume:/tmp/downloads
-    ports:
-      - "8000:8000"
-    restart: always
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    # ports:
+    #   - "8000:8000"
+    restart: unless-stopped
     depends_on:
       - selenium
+      - nginx-proxy
+
 
   selenium:
     image: selenium/standalone-firefox:4.27.0-20241204
     shm_size: 2gb
-    ports:
-      - "4444:4444"
-      - "7900:7900"
-#    environment:
+    # ports:
+    #   - "4444:4444"
+    #   - "7900:7900"
+    environment:
 #      - SE_START_XVFB=false
+      - SE_ENABLE_TRACING=false
     volumes:
       - shared-volume:/home/seluser/Downloads
 
