@@ -40,6 +40,8 @@ services:
       context: .
       dockerfile: ./config/backend/Dockerfile
     #command: /code/config/backend/start.sh
+    environment:
+      - PRODUCTION=true
     volumes:
       - .:/code
       - ./db:/db
@@ -50,7 +52,7 @@ services:
     restart: unless-stopped
     depends_on:
       - selenium
-    #  - nginx-proxy
+      - nginx-proxy
 
 
   selenium:
