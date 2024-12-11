@@ -5,6 +5,7 @@ from planning_cases.models import planning_case
 
 from django.utils.timezone import localdate, now
 from datetime import timedelta, datetime
+from django.db import IntegrityError
 
 from ._scrape_accella import get_case_list, get_case_details
 
