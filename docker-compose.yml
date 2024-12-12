@@ -45,7 +45,7 @@ services:
     volumes:
       - .:/code
       - ./db:/db
-      - static:/home/production/zpe/static/
+      - static:/static/
       - shared-volume:/tmp/downloads
     ports:
       - "8000:8000"
