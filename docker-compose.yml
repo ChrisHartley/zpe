@@ -12,7 +12,7 @@ services:
     #  - /etc/acme.sh
       - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - static:/static
+      - static:/
     ports:
       - '80:80'
       - '443:443'
