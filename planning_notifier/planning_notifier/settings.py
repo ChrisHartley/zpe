@@ -125,6 +125,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
 if os.getenv('PRODUCTION', 'false') == 'true':
     DEBUG = False
     STATIC_ROOT = '/home/production/zpe/static/'
