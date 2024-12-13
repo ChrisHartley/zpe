@@ -24,7 +24,7 @@ class area_of_interest(models.Model):
     geometry = models.PolygonField()
     name = models.CharField(max_length=200, blank=False)
 
-    planning_cases = models.ManyToManyField(planning_case)
+    planning_cases = models.ManyToManyField(planning_case, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
