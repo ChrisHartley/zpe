@@ -13,6 +13,9 @@ services:
       - /usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - static:/static/
+    networks:
+      - backend
+      - frontend
     ports:
       - '80:80'
       - '443:443'
@@ -31,6 +34,8 @@ services:
       - acme:/etc/acme.sh
     volumes_from:
       - nginx-proxy
+    networks:
+      - frontend
     restart: unless-stopped
     depends_on:
       - nginx-proxy
@@ -47,6 +52,8 @@ services:
       - ./db:/db
       - static:/static/
       - shared-volume:/tmp/downloads
+    networks:
+      - backend
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -58,9 +65,12 @@ services:
   selenium:
     image: selenium/standalone-firefox:4.27.0-20241204
     shm_size: 2gb
+    networks:
+      - frontend
+      - backend
     ports:
-      - "4444:4444"
-      - "7900:7900"
+      - "127.0.0.1:4444:4444"
+      - "127.0.0.1:7900:7900"
     environment:
 #      - SE_START_XVFB=false
       - SE_ENABLE_TRACING=false
@@ -68,8 +78,8 @@ services:
       - shared-volume:/home/seluser/Downloads
 
 networks:
-  local:
-    driver: bridge
+  frontend:
+  backend:
 
 volumes:
   shared-volume:
