@@ -1,3 +1,6 @@
+ZPEIT - Zoning, Permits, Enforcement Information Tool
+
+
 Tools to scrape Accella, save the resulting cases in a django app,
 send emails notifying users of cases within their defined areas of interest
 
@@ -8,3 +11,9 @@ Docker
 - nginix
 - Selenium Firefox
   - scraper
+
+
+Pre-defined areas of interest
+- Zipcodes
+- Townships
+- Defined neighborhoods
