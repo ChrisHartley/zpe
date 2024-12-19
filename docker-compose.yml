@@ -68,8 +68,9 @@ services:
     restart: unless-stopped
     labels:
       ofelia.enabled: "true"
-      ofelia.job-exec.datecron.schedule: "@every 1d"
-      ofelia.job-exec.datecron.command: "./config/backend/fetch_cases.sh"
+      ofelia.job-exec.fetch.schedule: "@hourly"
+      ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
+      ofelia.job-exec.fetch.no-overlap: "true"
     depends_on:
       - selenium
       - nginx-proxy
