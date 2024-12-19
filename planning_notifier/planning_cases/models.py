@@ -11,6 +11,8 @@ class planning_case(models.Model):
 
     case_url = models.URLField(blank=True)
     geometry_pnt = models.PointField(blank=True)
+    geometry_poly = models.PolygonField(blank=True)
+
     parcel_number = models.CharField(max_length=20, blank=True)
 
 
@@ -24,7 +26,6 @@ class area_of_interest(models.Model):
     geometry = models.PolygonField()
     name = models.CharField(max_length=200, blank=False)
 
-    planning_cases = models.ManyToManyField(planning_case, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

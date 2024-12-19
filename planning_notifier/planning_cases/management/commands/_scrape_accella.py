@@ -162,8 +162,10 @@ def get_case_details(case, driver=None):
         geocoded_results = geocode_parcel_number(case_details['Parcel'])
         try:
             case_details['PNT_WKT'] = geocoded_results['PNT_WKT']
+            #case_details['GEO_WKT'] = geocoded_results['GEO_WKT']
         except KeyError:
             case_details['PNT_WKT'] = ''
+        #    case_details['GEO_WKT'] = ''
     except (NoSuchElementException, TimeoutException):
         return None
     return case_details
@@ -190,6 +192,10 @@ def get_case_list(start_date='09/10/2024', end_date='09/12/2024'):
         elem.send_keys(Keys.ARROW_LEFT)
     elem.send_keys(end_date)
     elem = driver.find_element(By.ID, "ctl00_PlaceHolderMain_btnNewSearch").click()
+
+    if len(driver.find_elements(By.ID, "ctl00_PlaceHolderMain_RecordSearchResultInfo_noDataMessageForSearchResultList_lblMessage")) > 0:
+        print('No cases found for dates given')
+        return []
 
     download_list_link = driver.find_element(By.ID, "ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList_gdvPermitListtop4btnExport")
     wait = WebDriverWait(driver, 30)

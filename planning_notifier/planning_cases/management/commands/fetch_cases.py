@@ -8,6 +8,7 @@ from datetime import timedelta, datetime
 from django.db import IntegrityError
 
 from ._scrape_accella import get_case_list, get_case_details
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 
 class Command(BaseCommand):
@@ -26,7 +27,11 @@ class Command(BaseCommand):
                 case_details = get_case_details(case=case_number)
                 cases.append(case_details)
         else:
-            cases = get_case_list(start_date=options['start_date'], end_date=options['end_date'])
+            try:
+                cases = get_case_list(start_date=options['start_date'], end_date=options['end_date'])
+            except NoSuchElementException, TimeoutException as e:
+                cases = []
+                print('Exception during case list fetch.')
         cases_created = 0
         for case_details in cases:
             try:
