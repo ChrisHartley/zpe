@@ -52,6 +52,7 @@ class Command(BaseCommand):
                         'parcel_number':case_details['Parcel'],
                     },
                 )
+                print(created, obj)
                 if created:
                     cases_created = cases_created + 1
             except IntegrityError:
