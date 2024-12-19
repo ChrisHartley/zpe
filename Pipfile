@@ -13,6 +13,7 @@ pandas = "*"
 lxml = "*"
 gunicorn = "*"
 notebook = "*"
+django-allauth = "*"
 
 [dev-packages]
 

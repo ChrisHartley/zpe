@@ -29,7 +29,7 @@ class Command(BaseCommand):
         else:
             try:
                 cases = get_case_list(start_date=options['start_date'], end_date=options['end_date'])
-            except NoSuchElementException, TimeoutException as e:
+            except (NoSuchElementException, TimeoutException) as e:
                 cases = []
                 print('Exception during case list fetch.')
         cases_created = 0
