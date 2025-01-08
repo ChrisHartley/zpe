@@ -31,13 +31,18 @@ class Command(BaseCommand):
                 cases = get_case_list(start_date=options['start_date'], end_date=options['end_date'])
             except (NoSuchElementException, TimeoutException) as e:
                 cases = []
-                print('Exception during case list fetch.')
+                 self.stdout.write('Exception during case list fetch.')
         cases_created = 0
+        self.stdout.write((cases)
         for case_details in cases:
             try:
-                geometry_pnt=GEOSGeometry(case_details['PNT_WKT'])
+                geometry_pnt=case_details['PNT_GEOM']
+                geometry_poly=case_details['POLY_GEOM']
+
             except ValueError:
                 geometry_pnt = None
+                geometry_poly = None
+                self.stdout.write('ValueError with geometry')
             try:
                 obj, created = planning_case.objects.update_or_create(
                     case_number=case_details['Case Number'],
@@ -52,11 +57,12 @@ class Command(BaseCommand):
                         'parcel_number':case_details['Parcel'],
                     },
                 )
-                print(created, obj)
+                 self.stdout.write(created, obj)
                 if created:
                     cases_created = cases_created + 1
-            except IntegrityError:
-                pass
+            except IntegrityError as e:
+                self.stdout.write('integrityerror', e)
+
         self.stdout.write(
             self.style.SUCCESS('Successfully fetched and saved {} cases - {} new'.format(len(cases), cases_created) )
         )
