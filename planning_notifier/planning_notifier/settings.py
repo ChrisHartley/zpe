@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'allauth',
     'allauth.account',
+    'django_filters',
 
 ]
 

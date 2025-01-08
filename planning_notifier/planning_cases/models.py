@@ -11,7 +11,7 @@ class planning_case(models.Model):
 
     case_url = models.URLField(blank=True)
     geometry_pnt = models.PointField(blank=True)
-    geometry_poly = models.PolygonField(blank=True)
+#    geometry_poly = models.PolygonField(blank=True)
 
     parcel_number = models.CharField(max_length=20, blank=True)
 

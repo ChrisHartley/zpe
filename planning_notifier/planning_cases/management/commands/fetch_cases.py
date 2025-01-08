@@ -33,7 +33,7 @@ class Command(BaseCommand):
                 cases = []
                 self.stdout.write('Exception during case list fetch.')
         cases_created = 0
-        self.stdout.write(cases)
+        self.stdout.write(str(cases)
         for case_details in cases:
             try:
                 geometry_pnt=case_details['PNT_GEOM']

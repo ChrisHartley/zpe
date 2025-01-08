@@ -14,6 +14,7 @@ lxml = "*"
 gunicorn = "*"
 notebook = "*"
 django-allauth = "*"
+django-filter = "*"
 
 [dev-packages]
 

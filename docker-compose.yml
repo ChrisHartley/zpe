@@ -2,6 +2,7 @@ services:
   ofelia:
     image: mcuadros/ofelia:latest
     container_name: ofelia
+    profiles: [production]
     depends_on:
       - django
     command: daemon --docker
@@ -12,6 +13,7 @@ services:
   nginx-proxy:
     image: nginxproxy/nginx-proxy
     container_name: nginx-proxy
+    profiles: [production]
     build:
       context: .
       dockerfile: ./config/nginx/Dockerfile
@@ -33,6 +35,7 @@ services:
   letsencrypt:
     image: nginxproxy/acme-companion
     container_name: acme-companion
+    profiles: [production]
     environment:
       - LETSENCRYPT_EMAIL=kristina.trinity@anymouse.org
       - LETSENCRYPT_HOST=zpe.anymouse.org
@@ -53,7 +56,6 @@ services:
     build:
       context: .
       dockerfile: ./config/backend/Dockerfile
-    #command: /code/config/backend/start.sh
     environment:
       - PRODUCTION=true
     volumes:
@@ -68,7 +70,7 @@ services:
     restart: unless-stopped
     labels:
       ofelia.enabled: "true"
-      ofelia.job-exec.fetch.schedule: "@hourly"
+      ofelia.job-exec.fetch.schedule: "@daily"
       ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
       ofelia.job-exec.fetch.no-overlap: "true"
     depends_on:
