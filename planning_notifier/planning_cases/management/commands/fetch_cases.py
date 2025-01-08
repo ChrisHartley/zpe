@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 cases = get_case_list(start_date=options['start_date'], end_date=options['end_date'])
             except (NoSuchElementException, TimeoutException) as e:
                 cases = []
-                 self.stdout.write('Exception during case list fetch.')
+                self.stdout.write('Exception during case list fetch.')
         cases_created = 0
         self.stdout.write((cases)
         for case_details in cases:
