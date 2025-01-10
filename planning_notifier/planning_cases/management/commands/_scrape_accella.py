@@ -211,14 +211,18 @@ def get_case_details(case, driver=None):
         case_details['CaseType'] = driver.find_element(By.XPATH, '//span[@id="ctl00_PlaceHolderMain_lblPermitType"]').text
         case_details['Owner'] = driver.find_element(By.XPATH, "//table[@id='ctl00_PlaceHolderMain_PermitDetailList1_TBPermitDetailTest']//div[contains(.,'Owner:')]").text[7:]
         case_details['Case URL'] = driver.current_url
-        geocoded_results = geocode_parcel_number(case_details['Parcel'])
+        case_details['Parcel Details'] = get_parcel_details_full(case_details['Parcel'])
+       # geocoded_results = geocode_parcel_number(case_details['Parcel'])
         try:
-            case_details['PNT_WKT'] = geocoded_results['PNT_WKT']
-            #case_details['GEO_WKT'] = geocoded_results['GEO_WKT']
+            #case_details['PNT_WKT'] = geocoded_results['PNT_WKT']
+#            case_details['GEO_WKT'] = geocoded_results['GEO_WKT']
+            case_details['POLY_GEOM'] = case_details['Parcel Details']['POLY_GEOM']
         except KeyError:
-            case_details['PNT_WKT'] = ''
+#            case_details['PNT_WKT'] = ''
         #    case_details['GEO_WKT'] = ''
+            case_details['POLY_GEOM'] = None
     except (NoSuchElementException, TimeoutException):
+        self.stdout.write('NoSuchElementException or TimeoutException in get_case_details for {}'.format(case,))
         return None
     return case_details
 
