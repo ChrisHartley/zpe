@@ -22,6 +22,8 @@ from requests.adapters import HTTPAdapter
 from requests.exceptions import RequestException
 from random import randint
 
+from django.contrib.gis.geos import GEOSGeometry
+
 # by supputuri: https://stackoverflow.com/a/56570364
 def getDownLoadedFileName(driver, waitTime):
     driver.execute_script("window.open()")
@@ -121,6 +123,56 @@ def get_parcel_details(parcel_number):
             ]
             for field in FIELDS_OF_INTEREST:
                 results_dict[field] = response_json['features'][0]['attributes'][field]
+
+        except:
+            print('Unable to retrieve details on parcel {}'.format(parcel_number,))
+            print(results_dict)
+
+    else:
+        results_dict
+    return results_dict
+
+
+def get_parcel_details_full(parcel_number):
+    BASE_URL = 'https://xmaps.indy.gov/arcgis/rest/services/MapIndy/MapIndyProperty/MapServer/10/query?'
+    #BASE_URL = 'http://xmaps.indy.gov/arcgis/rest/services/Common/CommonlyUsedLayers/MapServer/0/query?'
+    #QUERY = 'where=PARCEL_C%3D+%27{parcel_number}%27&outFields=*&returnGeometry=true&f=pjson'.format(parcel_number=parcel_number)
+    QUERY = 'where=PARCEL_C%3D%27{parcel_number}%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&queryByDistance=&returnExtentsOnly=false&datumTransformation=&parameterValues=&rangeValues=&f=pjson'.format(parcel_number=parcel_number)
+
+    s = Session()
+    retries = Retry(
+        total=5,
+        backoff_factor=0.1,
+    )
+    s.mount('http://', HTTPAdapter(max_retries=retries))
+    results_dict = {}
+
+    try:
+        response = s.get(BASE_URL+QUERY, timeout=30)
+    except RequestException as err:
+        return results_dict
+
+    if response.status_code == 200:
+        try:
+            response_json = response.json()
+            FIELDS_OF_INTEREST = [
+                'STNUMBER', 'PRE_DIR', 'FULL_STNAME', 'SUF_DIR', 'CITY', 'ZIPCODE',
+                'FULLOWNERNAME', 'ESTSQFT', 'PROPERTY_CLASS', 'OWNERADDRESS', 'OWNERADDRESS2',
+                'OWNERCITY', 'OWNERSTATE', 'OWNERZIP', 'ASSESSORYEAR_LANDTOTAL', 'ASSESSORYEAR_IMPTOTAL',
+                'ASSESSORYEAR_TOTALAV', 'LEGAL_DESCRIPTION_'
+            ]
+            for field in FIELDS_OF_INTEREST:
+                results_dict[field] = response_json['features'][0]['properties'][field]
+
+            #wkid = response_json['crs']['properties']['name']
+            results_dict['POLY_GEOM'] = GEOSGeometry(response_json['features'][0])
+            #results_dict['PNT_GEOM'] = GEOSGeometry()
+
+            #lon = response_json['candidates'][0]["location"]["x"]
+            #lat = response_json['candidates'][0]["location"]["y"]
+            #results_dict['PNT_WKT'] = 'SRID={wkid};POINT({lon} {lat})'.format(wkid=wkid, lon=lon, lat=lat)
+            #results_dict['Geocoding Accuracy']  = response_json['candidates'][0]['score']
+
 
         except:
             print('Unable to retrieve details on parcel {}'.format(parcel_number,))

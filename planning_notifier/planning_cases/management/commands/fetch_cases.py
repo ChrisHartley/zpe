@@ -36,11 +36,11 @@ class Command(BaseCommand):
         self.stdout.write(str(cases))
         for case_details in cases:
             try:
-                geometry_pnt=case_details['PNT_GEOM']
+             #   geometry_pnt=case_details['PNT_GEOM']
                 geometry_poly=case_details['POLY_GEOM']
 
             except ValueError:
-                geometry_pnt = None
+            #    geometry_pnt = None
                 geometry_poly = None
                 self.stdout.write('ValueError with geometry')
             try:
@@ -53,7 +53,8 @@ class Command(BaseCommand):
                         'description':case_details['Description'],
                         'owner':case_details['Owner'],
                         'case_url':case_details['Case URL'],
-                        'geometry_pnt':geometry_pnt,
+                       # 'geometry_pnt':geometry_pnt,
+                        'geometry_poly':geometry_poly,
                         'parcel_number':case_details['Parcel'],
                     },
                 )
