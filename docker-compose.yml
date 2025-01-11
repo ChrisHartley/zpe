@@ -78,7 +78,7 @@ services:
     - selenium
     #   - nginx-proxy
 
-  django:
+  django-dev:
     build:
     context: .
     dockerfile: ./config/backend/Dockerfile-local
