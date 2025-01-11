@@ -54,33 +54,62 @@ services:
 
   django:
     build:
-      context: .
-      dockerfile: ./config/backend/Dockerfile
+    context: .
+    dockerfile: ./config/backend/Dockerfile
+    profiles: [production]
     environment:
-      - PRODUCTION=true
+    - PRODUCTION=true
     volumes:
-      - .:/code
-      - ./db:/db
-      - static:/static/
-      - shared-volume:/tmp/downloads
+    - .:/code
+    - ./db:/db
+    - static:/static/
+    - shared-volume:/tmp/downloads
     networks:
-      - backend
+    - backend
     ports:
-      - "8000:8000"
+    - "8000:8000"
     restart: unless-stopped
     labels:
-      ofelia.enabled: "true"
-      ofelia.job-exec.fetch.schedule: "@daily"
-      ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
-      ofelia.job-exec.fetch.no-overlap: "true"
+    ofelia.enabled: "true"
+    ofelia.job-exec.fetch.schedule: "@daily"
+    ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
+    ofelia.job-exec.fetch.no-overlap: "true"
     depends_on:
-      - selenium
-   #   - nginx-proxy
+    - selenium
+    #   - nginx-proxy
+
+  django:
+    build:
+    context: .
+    dockerfile: ./config/backend/Dockerfile-local
+    profiles: [debug]
+    environment:
+    - PRODUCTION=true
+    volumes:
+    - .:/code
+    - ./db:/db
+    - static:/static/
+    - shared-volume:/tmp/downloads
+    networks:
+    - backend
+    ports:
+    - "8000:8000"
+    restart: unless-stopped
+    labels:
+    ofelia.enabled: "true"
+    ofelia.job-exec.fetch.schedule: "@daily"
+    ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
+    ofelia.job-exec.fetch.no-overlap: "true"
+    depends_on:
+    - selenium
+    #   - nginx-proxy
 
 
   selenium:
     image: selenium/standalone-firefox:4.27.0-20241204
     shm_size: 2gb
+    profiles: [production, debug]
+
     networks:
       - frontend
       - backend
@@ -88,7 +117,7 @@ services:
       - "127.0.0.1:4444:4444"
       - "127.0.0.1:7900:7900"
     environment:
-#      - SE_START_XVFB=false
+    #      - SE_START_XVFB=false
       - SE_ENABLE_TRACING=false
     volumes:
       - shared-volume:/home/seluser/Downloads
