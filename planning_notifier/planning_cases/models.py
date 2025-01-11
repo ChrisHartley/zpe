@@ -10,8 +10,8 @@ class planning_case(models.Model):
     owner = models.CharField(max_length=1024, blank=True)
 
     case_url = models.URLField(blank=True)
-    geometry_pnt = models.PointField(blank=True)
-    geometry_poly = models.PolygonField(blank=True)
+    geometry_pnt = models.PointField(blank=True, null=True)
+    geometry_poly = models.PolygonField(blank=True, null=True)
 
     parcel_number = models.CharField(max_length=20, blank=True)
 

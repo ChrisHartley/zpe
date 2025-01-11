@@ -22,7 +22,7 @@ from requests.adapters import HTTPAdapter
 from requests.exceptions import RequestException
 from random import randint
 
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, LinearRing, Polygon
 
 # by supputuri: https://stackoverflow.com/a/56570364
 def getDownLoadedFileName(driver, waitTime):
@@ -166,6 +166,7 @@ def get_parcel_details_full(parcel_number):
 
             #wkid = response_json['crs']['properties']['name']
             results_dict['POLY_GEOM'] = GEOSGeometry(response_json['features'][0])
+            results_dict['POLY_GEOM'] = MultiPolygon(Polygon(LinearRing(response_json['features'][0]['geometry']['rings'][0], srid=2965), srid=2965), srid=2965)
             #results_dict['PNT_GEOM'] = GEOSGeometry()
 
             #lon = response_json['candidates'][0]["location"]["x"]
