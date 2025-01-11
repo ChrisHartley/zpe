@@ -75,7 +75,7 @@ services:
       ofelia.job-exec.fetch.no-overlap: "true"
     depends_on:
       - selenium
-      - nginx-proxy
+   #   - nginx-proxy
 
 
   selenium:
