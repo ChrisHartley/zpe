@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load django_svelte %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block css %}
+  {{ block.super }}
+  {% display_svelte_css "HelloWorld" %}
+{% endblock %}
+
+{% block body %}
+  <h1>Hello ZPE {{helloZpe}}</h1>
+  {% display_svelte "HelloWorld" {{svelteProps}} %}
+{% endblock %}
+
+

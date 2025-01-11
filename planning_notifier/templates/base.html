@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ZPE{% endblock %}</title>
+    {% block css %}
+      {{ block.super }}
+      <!-- Load global styles here -->
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+      {{ block.super }}
+    {% endblock %}
+    {% block js %}
+      {{ block.super }}
+      <!-- Load global scripts here -->
+    {% endblock %}
+</body>
+</html>

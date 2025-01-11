@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django_svelte'
 ]
 
 MIDDLEWARE = [
@@ -119,6 +120,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    BASE_DIR / "svelte" / "dist" / "assets",
+]
+
+DJANGO_SVELTE_VITE_MANIFEST_PATH = BASE_DIR / "svelte" / "dist" / ".vite" / "manifest.json" ,
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
