@@ -54,8 +54,8 @@ services:
 
   django:
     build:
-    context: .
-    dockerfile: ./config/backend/Dockerfile
+      context: .
+      dockerfile: ./config/backend/Dockerfile
     profiles: [production]
     environment:
     - PRODUCTION=true
@@ -70,18 +70,18 @@ services:
     - "8000:8000"
     restart: unless-stopped
     labels:
-    ofelia.enabled: "true"
-    ofelia.job-exec.fetch.schedule: "@daily"
-    ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
-    ofelia.job-exec.fetch.no-overlap: "true"
+      ofelia.enabled: "true"
+      ofelia.job-exec.fetch.schedule: "@daily"
+      ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
+      ofelia.job-exec.fetch.no-overlap: "true"
     depends_on:
     - selenium
     #   - nginx-proxy
 
   django-dev:
     build:
-    context: .
-    dockerfile: ./config/backend/Dockerfile-local
+      context: .
+      dockerfile: ./config/backend/Dockerfile-local
     profiles: [debug]
     environment:
     - PRODUCTION=true
@@ -96,10 +96,10 @@ services:
     - "8000:8000"
     restart: unless-stopped
     labels:
-    ofelia.enabled: "true"
-    ofelia.job-exec.fetch.schedule: "@daily"
-    ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
-    ofelia.job-exec.fetch.no-overlap: "true"
+      ofelia.enabled: "true"
+      ofelia.job-exec.fetch.schedule: "@daily"
+      ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
+      ofelia.job-exec.fetch.no-overlap: "true"
     depends_on:
     - selenium
     #   - nginx-proxy
