@@ -84,7 +84,7 @@ services:
       dockerfile: ./config/backend/Dockerfile-local
     profiles: [debug]
     environment:
-    - PRODUCTION=true
+    - PRODUCTION=false
     volumes:
     - .:/code
     - ./db:/db
