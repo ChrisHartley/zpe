@@ -17,3 +17,10 @@ Pre-defined areas of interest
 - Zipcodes
 - Townships
 - Defined neighborhoods
+
+
+# Dev
+
+## Run Django Server
+
+1. `docker compose --profile production up --build`
