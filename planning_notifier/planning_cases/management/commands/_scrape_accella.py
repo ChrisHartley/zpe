@@ -137,7 +137,7 @@ def get_parcel_details_full(parcel_number):
     BASE_URL = 'https://xmaps.indy.gov/arcgis/rest/services/MapIndy/MapIndyProperty/MapServer/10/query?'
     #BASE_URL = 'http://xmaps.indy.gov/arcgis/rest/services/Common/CommonlyUsedLayers/MapServer/0/query?'
     #QUERY = 'where=PARCEL_C%3D+%27{parcel_number}%27&outFields=*&returnGeometry=true&f=pjson'.format(parcel_number=parcel_number)
-    QUERY = 'where=PARCEL_C%3D%27{parcel_number}%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&queryByDistance=&returnExtentsOnly=false&datumTransformation=&parameterValues=&rangeValues=&f=pjson'.format(parcel_number=parcel_number)
+    QUERY = 'where=PARCEL_C%3D%27{parcel_number}%27&text=&objectIds=&time=&geometry=&geometryType=esriGeometryPolygon&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=4326&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&resultOffset=&resultRecordCount=&queryByDistance=&returnExtentsOnly=false&datumTransformation=&parameterValues=&rangeValues=&f=pjson'.format(parcel_number=parcel_number)
 
     s = Session()
     retries = Retry(
@@ -162,17 +162,9 @@ def get_parcel_details_full(parcel_number):
                 'ASSESSORYEAR_TOTALAV', 'LEGAL_DESCRIPTION_'
             ]
             for field in FIELDS_OF_INTEREST:
-                results_dict[field] = response_json['features'][0]['properties'][field]
+                results_dict[field] = response_json['features'][0]['attributes'][field]
 
-            #wkid = response_json['crs']['properties']['name']
-            results_dict['POLY_GEOM'] = GEOSGeometry(response_json['features'][0])
-            results_dict['POLY_GEOM'] = MultiPolygon(Polygon(LinearRing(response_json['features'][0]['geometry']['rings'][0], srid=2965), srid=2965), srid=2965)
-            #results_dict['PNT_GEOM'] = GEOSGeometry()
-
-            #lon = response_json['candidates'][0]["location"]["x"]
-            #lat = response_json['candidates'][0]["location"]["y"]
-            #results_dict['PNT_WKT'] = 'SRID={wkid};POINT({lon} {lat})'.format(wkid=wkid, lon=lon, lat=lat)
-            #results_dict['Geocoding Accuracy']  = response_json['candidates'][0]['score']
+            results_dict['POLY_GEOM'] = Polygon(LinearRing(response_json['features'][0]['geometry']['rings'][0], srid=4326), srid=4326)
 
 
         except Exception as e:
