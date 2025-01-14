@@ -246,10 +246,14 @@ def get_case_list(start_date='09/10/2024', end_date='09/12/2024'):
         print('No cases found for dates given')
         return []
 
-    download_list_link = driver.find_element(By.ID, "ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList_gdvPermitListtop4btnExport")
-    wait = WebDriverWait(driver, 30)
-    elem = wait.until(EC.element_to_be_clickable(download_list_link))
-    elem = driver.find_element(By.ID, "ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList_gdvPermitListtop4btnExport").click()
+    try:
+        download_list_link = driver.find_element(By.ID, "ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList_gdvPermitListtop4btnExport")
+        wait = WebDriverWait(driver, 30)
+        elem = wait.until(EC.element_to_be_clickable(download_list_link))
+        elem = driver.find_element(By.ID, "ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList_gdvPermitListtop4btnExport").click()
+    except NoSuchElementException as e:
+        return [] # If no cases, no download button, so just return empty list
+
     fileName = getDownLoadedFileName(driver, 10)
 
     cases = []
