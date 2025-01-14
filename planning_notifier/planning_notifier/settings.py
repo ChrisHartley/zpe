@@ -145,7 +145,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 
 if os.getenv('PRODUCTION', 'false') == 'true':
-    DEBUG = False
+#    DEBUG = False
     STATIC_ROOT = '/home/production/zpe/static/'
     ALLOWED_HOSTS = ['zpe.anymouse.org',]
 
