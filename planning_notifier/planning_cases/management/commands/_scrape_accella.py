@@ -215,7 +215,7 @@ def get_case_details(case, driver=None):
         #    case_details['GEO_WKT'] = ''
             case_details['POLY_GEOM'] = None
     except (NoSuchElementException, TimeoutException):
-        self.stdout.write('NoSuchElementException or TimeoutException in get_case_details for {}'.format(case,))
+        print('NoSuchElementException or TimeoutException in get_case_details for {}'.format(case,))
         return None
     return case_details
 
