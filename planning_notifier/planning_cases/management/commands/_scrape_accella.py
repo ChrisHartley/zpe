@@ -175,8 +175,8 @@ def get_parcel_details_full(parcel_number):
             #results_dict['Geocoding Accuracy']  = response_json['candidates'][0]['score']
 
 
-        except:
-            print('Unable to retrieve details on parcel {}'.format(parcel_number,))
+        except Exception as e:
+            print('Unable to retrieve details on parcel {} with exception {}'.format(parcel_number,e))
             print(results_dict)
 
     else:
