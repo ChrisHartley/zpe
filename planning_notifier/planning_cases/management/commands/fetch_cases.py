@@ -58,7 +58,7 @@ class Command(BaseCommand):
                         'parcel_number':case_details['Parcel'],
                     },
                 )
-                self.stdout.write(str(created), str(obj))
+                self.stdout.write('{} {}'.format(str(obj), str(created)))
                 if created:
                     cases_created = cases_created + 1
             except IntegrityError as e:
