@@ -96,7 +96,7 @@ services:
     - "8000:8000"
     restart: unless-stopped
     labels:
-      ofelia.enabled: "true"
+      ofelia.enabled: "false"
       ofelia.job-exec.fetch.schedule: "@daily"
       ofelia.job-exec.fetch.command: "python /code/planning_notifier/manage.py fetch_cases"
       ofelia.job-exec.fetch.no-overlap: "true"
